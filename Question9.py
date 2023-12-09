@@ -5,48 +5,46 @@ class Node:
 class LinkedList:
     def __init__(self):
         self.head = None
-    def push(self, data):
-        new_node = Node(data)
-        new_node.next = self.head
-        self.head = new_node
-    def print_list(self):
-        cur = self.head
-        while cur:
-            print(cur.data, end=" ")
-            cur = cur.next
+    def insert(self, data):
+        if not self.head:
+            self.head = Node(data)
+        else:
+            temp = self.head
+            while temp.next:
+                temp = temp.next
+            temp.next = Node(data)
+    def merge_linked_lists(self, linked_list2):
+        linked_list_merged = LinkedList()
+        linked_list_merged.head = self.merge_lists(self.head, linked_list2.head)
+        return linked_list_merged
+    def merge_lists(self, node1, node2):
+        if not node1:
+            return node2
+        if not node2:
+            return node1
+        if node1.data < node2.data:
+            result = node1
+            result.next = self.merge_lists(node1.next, node2)
+        else:
+            result = node2
+            result.next = self.merge_lists(node1, node2.next)
+        return result
+    def print_linked_list(self):
+        temp = self.head
+        while temp:
+            print(temp.data, end=" ")
+            temp = temp.next
         print()
-def merge_lists(list1, list2):
-    if not list1 and not list2:
-        return None
-    if not list1:
-        return list2
-    if not list2:
-        return list1
-    if list1.data < list2.data:
-        list1.next = merge_lists(list1.next, list2)
-        return list1
-    else:
-        list2.next = merge_lists(list1, list2.next)
-        return list2
-def main():
-    list1 = LinkedList()
-    list2 = LinkedList()
-    print("Enter list1:")
-    while True:
-        inp = input()
-        if inp:
-            list1.push(int(inp))
-        else:
-            break
-    print("Enter list2:")
-    while True:
-        inp = input()
-        if inp:
-            list2.push(int(inp))
-        else:
-            break
-    print("Merged list:")
-    merged_list = merge_lists(list1.head, list2.head)
-    merged_list.print_list()
-if __name__ == "__main__":
-    main()
+linked_list1 = LinkedList()
+n = int(input("Enter How Many Element in List1: "))
+for i in range(n):
+    data = int(input("Enter Element : "))
+    linked_list1.insert(data)
+linked_list2 = LinkedList()
+n = int(input("Enter How Many Element in List2: "))
+for i in range(n):
+    data2 = int(input("Enter Element : "))
+    linked_list2.insert(data2)
+linked_list_merged = linked_list1.merge_linked_lists(linked_list2)
+print("After merging the list is : ")
+linked_list_merged.print_linked_list()
